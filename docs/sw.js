@@ -19,6 +19,7 @@ function self_fetch(e) {
     const response = fetch(e.request);
     response.addHeader("Cross-Origin-Opener-Policy", "same-origin");
     response.addHeader("Cross-Origin-Embedder-Policy", "require-corp");
+    return response;
   }
   e.respondWith(getResponse);
   console.log("sw.js: End Handling Fetch");
