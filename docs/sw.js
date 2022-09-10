@@ -21,6 +21,10 @@ function self_fetch(e) {
       const responseHeaders = received.headers;
       responseHeaders.append("Cross-Origin-Opener-Policy", "same-origin");
       responseHeaders.append("Cross-Origin-Embedder-Policy", "require-corp");
+      console.log("Headers");
+      for (const [key, value] of responseHeaders) {
+        console.log(key, ":", value);
+      }
       const response = new Response(received.body, {
         status: 200,
         statusText: "OK",
