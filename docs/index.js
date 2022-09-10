@@ -28,6 +28,11 @@ function fail(e) {
 
 function start( [ evtWindow, serviceWorkerRegistration ] ) {
   console.log("start");
+  if (self.crossOriginIsolated) {
+    console.log("Cross Origin Isolated");
+  } else {
+    console.log("Not Cross Origin Isolated");
+  }
   try {
     const a = new SharedArrayBuffer();
     console.log("Success!");
