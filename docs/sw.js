@@ -24,7 +24,7 @@ function self_fetch(e) {
       const response = new Response(received.body, {
         status: 200,
         statusText: "OK",
-        headers: response,
+        headers: responseHeaders,
       });
       return response;
     } catch (e) {
