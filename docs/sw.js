@@ -15,9 +15,9 @@ function self_install(e) {
 
 function self_fetch(e) {
   console.log("sw.js: Start Handling Fetch");
-  function getResponse() {
+  async function getResponse() {
     try {
-      const received = fetch(e.request);
+      const received = await fetch(e.request);
       const responseHeaders = received.headers;
       responseHeaders.append("Cross-Origin-Opener-Policy", "same-origin");
       responseHeaders.append("Cross-Origin-Embedder-Policy", "require-corp");
