@@ -39,7 +39,7 @@ function self_fetch(e) {
       return response;
     }
   }
-  e.respondWith(getResponse);
+  e.respondWith(getResponse());
   console.log("sw.js: End Handling Fetch");
 }
 
