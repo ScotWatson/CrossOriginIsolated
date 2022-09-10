@@ -16,16 +16,24 @@ function self_install(e) {
 function self_fetch(e) {
   console.log("sw.js: Start Handling Fetch");
   function getResponse() {
-    const received = fetch(e.request);
-    const response = new Response(received.body, {
-      status: 200,
-      statusText: "OK",
-      headers: {
-        "Cross-Origin-Opener-Policy": "same-origin",
-        "Cross-Origin-Embedder-Policy": "require-corp",
-      },
-    });
-    return response;
+    try {
+      const received = fetch(e.request);
+      const response = new Response(received.body, {
+        status: 200,
+        statusText: "OK",
+        headers: {
+          "Cross-Origin-Opener-Policy": "same-origin",
+          "Cross-Origin-Embedder-Policy": "require-corp",
+        },
+      });
+      return response;
+    } catch (e) {
+      const response = new Response(e.message, {
+        status: 200,
+        statusText: "OK",
+      });
+      return response;
+    }
   }
   e.respondWith(getResponse);
   console.log("sw.js: End Handling Fetch");
