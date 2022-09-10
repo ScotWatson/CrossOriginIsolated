@@ -11,7 +11,7 @@ const loadWindow = new Promise(function (resolve, reject) {
   });
 });
 
-const installServiceWorker = new Promise(function (resolve, reject) {
+const installServiceWorker = Promise.resolve().then(function () {
   if ("serviceWorker" in navigator) {
     return navigator.serviceWorker.register("sw.js");
   } else {
