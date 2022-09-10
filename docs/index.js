@@ -9,12 +9,26 @@ const loadWindow = new Promise(function (resolve, reject) {
   });
 });
 
-Promise.all( [ loadWindow ] ).then(start, fail);
+const installServiceWorker = new Promise(function (resolve, reject) {
+  if ("serviceWorker" in navigator) {
+    return navigator.serviceWorker.register("sw.js");
+  } else {
+    throw new Error("serviceWorker not in navigator");
+  }
+});
+
+Promise.all( [ loadWindow, installServiceWorker ] ).then(start, fail);
 
 function fail(e) {
   console.error("loadFail");
   console.error(e);
 }
 
-function start( [ evtWindow ] ) {
+function start( [ evtWindow, serviceWorkerRegistration ] ) {
+  try {
+    const a = new SharedArrayBuffer();
+    console.log("Success!");
+  } catch (e) {
+    console.error(e);
+  }
 }
