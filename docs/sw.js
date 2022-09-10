@@ -18,13 +18,17 @@ function self_fetch(e) {
   async function getResponse() {
     try {
       const received = await fetch(e.request);
-      console.log("Headers");
+      console.log("Received Headers");
       for (const [key, value] of received.headers) {
         console.log(key, ":", value);
       }
       const responseHeaders = new Headers();
       responseHeaders.append("Cross-Origin-Opener-Policy", "same-origin");
       responseHeaders.append("Cross-Origin-Embedder-Policy", "require-corp");
+      console.log("Response Headers");
+      for (const [key, value] of responseHeaders) {
+        console.log(key, ":", value);
+      }
       const response = new Response(received.body, {
         status: 200,
         statusText: "OK",
