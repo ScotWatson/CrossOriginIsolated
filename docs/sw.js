@@ -18,13 +18,13 @@ function self_fetch(e) {
   function getResponse() {
     try {
       const received = fetch(e.request);
+      const responseHeaders = received.headers;
+      responseHeaders.append("Cross-Origin-Opener-Policy", "same-origin");
+      responseHeaders.append("Cross-Origin-Embedder-Policy", "require-corp");
       const response = new Response(received.body, {
         status: 200,
         statusText: "OK",
-        headers: {
-          "Cross-Origin-Opener-Policy": "same-origin",
-          "Cross-Origin-Embedder-Policy": "require-corp",
-        },
+        headers: response,
       });
       return response;
     } catch (e) {
