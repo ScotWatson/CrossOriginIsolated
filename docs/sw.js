@@ -15,6 +15,7 @@ function self_install(e) {
 
 function self_fetch(e) {
   console.log("sw.js: Start Handling Fetch");
+  console.log(e.request);
   async function getResponse() {
     try {
       const received = await fetch(e.request);
