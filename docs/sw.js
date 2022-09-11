@@ -43,7 +43,7 @@ function self_fetch(e) {
         const bodyContents = await receivedResponse.arrayBuffer();
         sentBody = new Blob(bodyContents, "application/javascript");
       } else {
-        sentBody = receivedResponse.body;
+        sentBody = await receivedResponse.blob();
       }
       const sentResponse = new Response(sentBody, {
         status: 200,
