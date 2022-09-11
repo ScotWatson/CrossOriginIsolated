@@ -14,8 +14,8 @@ function self_install(e) {
 }
 
 function self_fetch(e) {
-  console.log("sw.js: Start Handling Fetch");
-  console.log(e.request);
+  //console.log("sw.js: Start Handling Fetch");
+  //console.log(e.request);
   async function getResponse() {
     try {
       const receivedResponse = await fetch(e.request);
@@ -66,7 +66,7 @@ function self_fetch(e) {
     }
   }
   e.respondWith(getResponse());
-  console.log("sw.js: End Handling Fetch");
+  //console.log("sw.js: End Handling Fetch");
 }
 
 self.addEventListener("install", self_install);
