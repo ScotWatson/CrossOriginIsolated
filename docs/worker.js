@@ -12,6 +12,7 @@ import("https://scotwatson.github.io/Queue/Queue.mjs").then(function (Queue) {
   let receivedQueue;
 
   self.addEventListener("message", function (evt) {
+    console.log("worker.js message event triggered.");
     receivedQueue = new Queue.DataQueue({
       buffer: evt.data,
       shared: true,
