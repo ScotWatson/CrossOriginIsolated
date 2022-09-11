@@ -18,34 +18,45 @@ function self_fetch(e) {
   console.log(e.request);
   async function getResponse() {
     try {
-      const received = await fetch(e.request);
+      const receivedResponse = await fetch(e.request);
       /*
       console.log("Received Headers");
-      for (const [key, value] of received.headers) {
+      for (const [key, value] of receivedResponse.headers) {
         console.log(key, ":", value);
       }
       */
-      const responseHeaders = new Headers();
-      responseHeaders.append("Cross-Origin-Opener-Policy", "same-origin");
-      responseHeaders.append("Cross-Origin-Embedder-Policy", "require-corp");
+      const sentHeaders = new Headers();
+      for (const [key, value] of receivedResponse.headers) {
+        sentHeaders.append(key, value);
+      }
+      sentHeaders.append("Cross-Origin-Opener-Policy", "same-origin");
+      sentHeaders.append("Cross-Origin-Embedder-Policy", "require-corp");
       /*
-      console.log("Response Headers");
-      for (const [key, value] of responseHeaders) {
+      console.log("Sent Headers");
+      for (const [key, value] of sentHeaders) {
         console.log(key, ":", value);
       }
       */
-      const response = new Response(received.body, {
+      let sentBody;
+      // Per RFC4329, force all ".js" and ".mjs" files to have MIME type "application/javascript"
+      if (e.request.url.endsWith(".js") || e.request.url.endsWith(".mjs")) {
+        const bodyContents = await receivedResponse.body.arrayBuffer();
+        sentBody = new Blob(bodyContents, "application/javascript");
+      } else {
+        sentBody = receivedResponse.body;
+      }
+      const sentResponse = new Response(sentBody, {
         status: 200,
         statusText: "OK",
-        headers: responseHeaders,
+        headers: sentHeaders,
       });
-      return response;
+      return sentResponse;
     } catch (e) {
-      const response = new Response(e.message, {
+      const sentResponse = new Response(e.message, {
         status: 200,
         statusText: "OK",
       });
-      return response;
+      return sentResponse;
     }
   }
   e.respondWith(getResponse());
