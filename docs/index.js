@@ -31,6 +31,14 @@ function fail(e) {
 }
 
 function start( [ evtWindow, serviceWorkerRegistration, Queue ] ) {
+  let receivedQueue;
+  self.addEventListener("message", function (evt) {
+    console.log("index.js mesage event triggered.");
+    receivedQueue = new Queue.DataQueue({
+      buffer: evt.data,
+      shared: true,
+    });
+  });
   const worker = new Worker("worker.js");
   const loadTime = performance.now() - initPageLoad;
   console.log("Load Time:", loadTime);
@@ -46,14 +54,6 @@ function start( [ evtWindow, serviceWorkerRegistration, Queue ] ) {
       viewCtor: self.Uint8Array,
       length: 20,
       shared: true,
-    });
-    let receivedQueue;
-    self.addEventListener("message", function (evt) {
-      console.log("index.js mesage event triggered.");
-      receivedQueue = new Queue.DataQueue({
-        buffer: evt.data,
-        shared: true,
-      });
     });
     setTimeout(function () {
       worker.postMessage(sentQueue.buffer);
