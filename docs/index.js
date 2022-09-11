@@ -29,6 +29,7 @@ function fail(e) {
 }
 
 function start( [ evtWindow, serviceWorkerRegistration ] ) {
+  const worker = new Worker("worker.js");
   const loadTime = performance.now() - initPageLoad;
   console.log("Load Time:", loadTime);
   if (self.crossOriginIsolated) {
@@ -39,7 +40,21 @@ function start( [ evtWindow, serviceWorkerRegistration ] ) {
   try {
     const a = new SharedArrayBuffer();
     console.log("Success!");
+    let sentQueue = new DataQueue({
+      viewCtor: Uint8Array,
+      length: 20,
+      shared: true,
+    });
+    let receivedQueue;
+    self.addEventListener("message", function (evt) {
+      receivedQueue = new DataQueue({
+        buffer: evt.data,
+        shared: true,
+      });
+    });
+    worker.postMessage(sentQueue.buffer);
   } catch (e) {
     console.error(e);
   }
 }
+
