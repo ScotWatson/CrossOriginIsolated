@@ -86,7 +86,7 @@ function start( [ evtWindow, serviceWorkerRegistration, Queue ] ) {
         view: receivedQueueDequeueView,
       });
       for (let i = 0; i < 0x10; ++i) {
-        console.log(receivedQueueDequeueView + "[0x" + i.toString(16).padStart("0", 2) + "]: 0x" + receivedQueueDequeueView[i].toString(16).padStart("0", 2));
+        console.log("index.js receivedQueueDequeueView[0x" + i.toString(16).padStart("0", 2) + "]: 0x" + receivedQueueDequeueView[i].toString(16).padStart("0", 2));
       }
     }, 2000);
   } catch (e) {
