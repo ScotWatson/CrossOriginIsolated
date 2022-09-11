@@ -49,6 +49,7 @@ function start( [ evtWindow, serviceWorkerRegistration, Queue ] ) {
     });
     let receivedQueue;
     self.addEventListener("message", function (evt) {
+      console.log("index.js mesage event triggered.");
       receivedQueue = new Queue.DataQueue({
         buffer: evt.data,
         shared: true,
