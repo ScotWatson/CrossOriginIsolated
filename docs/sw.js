@@ -52,9 +52,10 @@ function self_fetch(e) {
       });
       return sentResponse;
     } catch (e) {
-      const sentResponse = new Response(e.message, {
-        status: 200,
-        statusText: "OK",
+      console.error(e);
+      const sentResponse = new Response("", {
+        status: 404,
+        statusText: "Not Found",
       });
       return sentResponse;
     }
