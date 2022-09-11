@@ -27,7 +27,10 @@ function self_fetch(e) {
       */
       const sentHeaders = new Headers();
       for (const [key, value] of receivedResponse.headers) {
-        sentHeaders.append(key, value);
+        // "permissions-policy" is troublesome
+        if (key.toLowerCase() !== "permissions-policy") {
+          sentHeaders.append(key, value);
+        }
       }
       sentHeaders.append("Cross-Origin-Opener-Policy", "same-origin");
       sentHeaders.append("Cross-Origin-Embedder-Policy", "require-corp");
