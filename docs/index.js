@@ -54,7 +54,9 @@ function start( [ evtWindow, serviceWorkerRegistration, Queue ] ) {
         shared: true,
       });
     });
-    worker.postMessage(sentQueue.buffer);
+    setTimeout(function () {
+      worker.postMessage(sentQueue.buffer);
+    }, 250);
     setTimeout(function () {
       const sentQueueReserveView = sentQueue.reserve({
         length: 0x10,
