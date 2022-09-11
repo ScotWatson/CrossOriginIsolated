@@ -31,23 +31,23 @@ function fail(e) {
 }
 
 function start( [ evtWindow, serviceWorkerRegistration, Queue ] ) {
-  const loadTime = performance.now() - initPageLoad;
-  let receivedQueue;
-  const worker = new Worker("worker.js");
-  worker.addEventListener("message", function (evt) {
-    console.log("index.js mesage event triggered.");
-    receivedQueue = new Queue.DataQueue({
-      buffer: evt.data,
-      shared: true,
-    });
-  });
-  console.log("Load Time:", loadTime);
-  if (self.crossOriginIsolated) {
-    console.log("Cross Origin Isolated");
-  } else {
-    console.log("Not Cross Origin Isolated");
-  }
   try {
+    const loadTime = performance.now() - initPageLoad;
+    let receivedQueue;
+    const worker = new Worker("worker.js");
+    worker.addEventListener("message", function (evt) {
+      console.log("index.js mesage event triggered.");
+      receivedQueue = new Queue.DataQueue({
+        buffer: evt.data,
+        shared: true,
+      });
+    });
+    console.log("Load Time:", loadTime);
+    if (self.crossOriginIsolated) {
+      console.log("Cross Origin Isolated");
+    } else {
+      console.log("Not Cross Origin Isolated");
+    }
     const a = new SharedArrayBuffer();
     console.log("Success!");
     let sentQueue = new Queue.DataQueue({
@@ -56,7 +56,10 @@ function start( [ evtWindow, serviceWorkerRegistration, Queue ] ) {
       shared: true,
     });
     setTimeout(function () {
-      worker.postMessage(sentQueue.buffer);
+      worker.postMessage({
+        type: 1,
+        buffer: sentQueue.buffer,
+      });
     }, 250);
     setTimeout(function () {
       const sentQueueReserveView = sentQueue.reserve({
