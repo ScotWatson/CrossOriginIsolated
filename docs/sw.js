@@ -40,7 +40,7 @@ function self_fetch(e) {
       let sentBody;
       // Per RFC4329, force all ".js" and ".mjs" files to have MIME type "application/javascript"
       if (e.request.url.endsWith(".js") || e.request.url.endsWith(".mjs")) {
-        const bodyContents = await receivedResponse.body.arrayBuffer();
+        const bodyContents = await receivedResponse.arrayBuffer();
         sentBody = new Blob(bodyContents, "application/javascript");
       } else {
         sentBody = receivedResponse.body;
