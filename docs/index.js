@@ -21,14 +21,16 @@ const installServiceWorker = Promise.resolve().then(function () {
   }
 });
 
-Promise.all( [ loadWindow, installServiceWorker ] ).then(start, fail);
+const importQueue = import("https://scotwatson.github.io/Queue/Queue.mjs");
+
+Promise.all( [ loadWindow, installServiceWorker, importQueue ] ).then(start, fail);
 
 function fail(e) {
   console.error("loadFail");
   console.error(e);
 }
 
-function start( [ evtWindow, serviceWorkerRegistration ] ) {
+function start( [ evtWindow, serviceWorkerRegistration, Queue ] ) {
   const worker = new Worker("worker.js");
   const loadTime = performance.now() - initPageLoad;
   console.log("Load Time:", loadTime);
@@ -40,14 +42,14 @@ function start( [ evtWindow, serviceWorkerRegistration ] ) {
   try {
     const a = new SharedArrayBuffer();
     console.log("Success!");
-    let sentQueue = new DataQueue({
-      viewCtor: Uint8Array,
+    let sentQueue = new Queue.DataQueue({
+      viewCtor: self.Uint8Array,
       length: 20,
       shared: true,
     });
     let receivedQueue;
     self.addEventListener("message", function (evt) {
-      receivedQueue = new DataQueue({
+      receivedQueue = new Queue.DataQueue({
         buffer: evt.data,
         shared: true,
       });
@@ -57,4 +59,3 @@ function start( [ evtWindow, serviceWorkerRegistration ] ) {
     console.error(e);
   }
 }
-
