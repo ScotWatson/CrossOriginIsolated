@@ -31,16 +31,16 @@ function fail(e) {
 }
 
 function start( [ evtWindow, serviceWorkerRegistration, Queue ] ) {
+  const loadTime = performance.now() - initPageLoad;
   let receivedQueue;
-  self.addEventListener("message", function (evt) {
+  const worker = new Worker("worker.js");
+  worker.addEventListener("message", function (evt) {
     console.log("index.js mesage event triggered.");
     receivedQueue = new Queue.DataQueue({
       buffer: evt.data,
       shared: true,
     });
   });
-  const worker = new Worker("worker.js");
-  const loadTime = performance.now() - initPageLoad;
   console.log("Load Time:", loadTime);
   if (self.crossOriginIsolated) {
     console.log("Cross Origin Isolated");
