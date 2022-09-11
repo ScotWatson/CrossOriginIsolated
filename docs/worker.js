@@ -18,7 +18,9 @@ import("https://scotwatson.github.io/Queue/Queue.mjs").then(function (Queue) {
     });
   });
 
-  self.postMessage(sentQueue.buffer);
+  setTimeout(function () {
+    self.postMessage(sentQueue.buffer);
+  }, 250);
   
   setTimeout(function () {
     const sentQueueReserveView = sentQueue.reserve({
