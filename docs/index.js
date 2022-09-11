@@ -55,6 +55,37 @@ function start( [ evtWindow, serviceWorkerRegistration, Queue ] ) {
       });
     });
     worker.postMessage(sentQueue.buffer);
+    setTimeout(function () {
+      const sentQueueReserveView = sentQueue.reserve({
+        length: 0x10,
+      });
+      sentQueueReserveView[0x00] = 0x10;
+      sentQueueReserveView[0x01] = 0x11;
+      sentQueueReserveView[0x02] = 0x12;
+      sentQueueReserveView[0x03] = 0x13;
+      sentQueueReserveView[0x04] = 0x14;
+      sentQueueReserveView[0x05] = 0x15;
+      sentQueueReserveView[0x06] = 0x16;
+      sentQueueReserveView[0x07] = 0x17;
+      sentQueueReserveView[0x08] = 0x18;
+      sentQueueReserveView[0x09] = 0x19;
+      sentQueueReserveView[0x0A] = 0x1A;
+      sentQueueReserveView[0x0B] = 0x1B;
+      sentQueueReserveView[0x0C] = 0x1C;
+      sentQueueReserveView[0x0D] = 0x1D;
+      sentQueueReserveView[0x0E] = 0x1E;
+      sentQueueReserveView[0x0F] = 0x1F;
+      sentQueue.enqueue();
+    }, 1000);
+    setTimeout(function () {
+      const receivedQueueDequeueView = new receivedQueue.viewCtor(0x10);
+      receivedQueue.dequeue({
+        view: receivedQueueDequeueView,
+      });
+      for (let i = 0; i < 0x10; ++i) {
+        console.log(receivedQueueDequeueView + "[0x" + i.toString(16).padStart("0", 2) + "]: 0x" + receivedQueueDequeueView[i].toString(16).padStart("0", 2));
+      }
+    }, 2000);
   } catch (e) {
     console.error(e);
   }
